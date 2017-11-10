@@ -1,5 +1,5 @@
 class Room
-  attr_reader :name, :guests, :songs
+  attr_reader :name, :guests, :songs, :money
   attr_accessor :capacity
 
   def initialize(name)
@@ -7,13 +7,16 @@ class Room
     @guests = []
     @songs = []
     @capacity = 5
+    @money = 1000
   end
 
   def check_in_guest(guest)
-    if @guests.length < @capacity
+    if (@guests.length < @capacity) && (guest.money >= 5)
       @guests << guest
+      guest.money -= 5
+      @money += 5
     else
-      return "Sorry you have to wait for someone to leave"
+      return "Sorry you can't come in"
     end
   end
 

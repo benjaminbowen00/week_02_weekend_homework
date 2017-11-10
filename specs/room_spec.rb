@@ -16,6 +16,7 @@ class TestRoom < MiniTest::Test
     @song1 = Song.new("Sara", "Fleetwood Mac")
     @song2 = Song.new("Song 2", "Blur")
     @room1 = Room.new("main")
+
   end
 
   def test_room_name
@@ -32,9 +33,13 @@ class TestRoom < MiniTest::Test
 
 
  def test_add_guests
+   @guest1.money = 4
    @room1.check_in_guest(@guest1)
    @room1.check_in_guest(@guest2)
-   assert_equal([@guest1, @guest2], @room1.guests)
+   assert_equal([@guest2], @room1.guests)
+   assert_equal(4, @guest1.money)
+   assert_equal(45, @guest2.money)
+   assert_equal(1005, @room1.money)
  end
 
  def test_remove_guests
@@ -66,7 +71,7 @@ class TestRoom < MiniTest::Test
    @room1.check_in_guest(@guest3)
    @room1.check_in_guest(@guest4)
    @room1.check_in_guest(@guest5)
-   assert_equal("Sorry you have to wait for someone to leave", @room1.check_in_guest(@guest6))
+   assert_equal("Sorry you can't come in", @room1.check_in_guest(@guest6))
  end
 
  def test_capacity_not_reached_if_someone_has_left
@@ -78,8 +83,20 @@ class TestRoom < MiniTest::Test
    @room1.check_out_guest(@guest3)
    @room1.check_in_guest(@guest6)
    assert_equal([@guest1, @guest2, @guest4, @guest5, @guest6], @room1.guests)
+   assert_equal(1030, @room1.money)
  end
 
+ def test_capacity_not_reached_limit_is_changed
+   @room1.capacity = 10
+   @room1.check_in_guest(@guest1)
+   @room1.check_in_guest(@guest2)
+   @room1.check_in_guest(@guest3)
+   @room1.check_in_guest(@guest4)
+   @room1.check_in_guest(@guest5)
+   @room1.check_in_guest(@guest6)
+   assert_equal(6, @room1.guests.length)
+   assert_equal([@guest1, @guest2, @guest3, @guest4, @guest5, @guest6], @room1.guests)
+ end
 
 
 end
