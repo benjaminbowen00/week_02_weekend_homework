@@ -19,8 +19,5 @@ class Guest
     end
   end
 
-  # def to_s
-  #   return @name
-  # end
 
 end

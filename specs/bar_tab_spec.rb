@@ -30,3 +30,10 @@ class TestBarTab < MiniTest::Test
 
 
 end
+
+
+#What happens when you have things in attr_accessor but not in the intialize? Is it OK but bad practice?
+
+#If we create two objects with the same information e.g. song title and artist - is there anyway to replace the second with the first so they both are the same?
+
+#if we update money via guests joining rooms - can we get the total_money as part of the bar to update automatically?
