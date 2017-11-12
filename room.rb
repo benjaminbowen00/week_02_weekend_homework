@@ -24,9 +24,20 @@ class Room
     @guests.delete(guest)
   end
 
+#updated so you can't add the same song twice
+#update if a person has a worst song, they leave if it is added to the room
   def add_song(song)
-    @songs << song
+    if !@songs.include?(song)
+      @songs << song
+    end
+    for person in @guests
+      if person.worst_song == song
+        @guests.delete(person)
+      end
+    end
   end
+
+
 
 
 end

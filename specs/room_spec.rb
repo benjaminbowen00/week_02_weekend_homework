@@ -15,6 +15,7 @@ class TestRoom < MiniTest::Test
     @guest6 = Guest.new("Ringo")
     @song1 = Song.new("Sara", "Fleetwood Mac")
     @song2 = Song.new("Song 2", "Blur")
+    @song3 = Song.new("My heart will go on", "Celine Dion")
     @room1 = Room.new("main")
 
   end
@@ -55,6 +56,14 @@ class TestRoom < MiniTest::Test
     @room1.add_song(@song2)
     assert_equal([@song1, @song2], @room1.songs)
   end
+
+  def test_add_same_song_twice
+    @room1.add_song(@song1)
+    @room1.add_song(@song2)
+    @room1.add_song(@song1)
+    assert_equal([@song1, @song2], @room1.songs)
+  end
+
 
   def test_capacity
     assert_equal(5, @room1.capacity)
@@ -119,5 +128,15 @@ class TestRoom < MiniTest::Test
     assert_equal("OMG I love Song 2", shout)
   end
 
-  
+  def test_person_leave_if_worst_song
+    @room1.check_in_guest(@guest1)
+    @room1.check_in_guest(@guest2)
+    @guest1.worst_song = @song3
+    @room1.add_song(@song1)
+    assert_equal(2, @room1.guests.length)
+    @room1.add_song(@song3)
+    assert_equal(1, @room1.guests.length)
+    assert_equal([@guest2], @room1.guests)
+  end
+
 end
